@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Supply Chain Shock Intelligence Platform</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="header-badge">LIVE INTELLIGENCE PLATFORM</div>
+            <h1>Global Supply Chain Shock Intelligence Platform</h1>
+            <p>Scenario: Taiwan Semiconductor Supply Chain — 40% Disruption Analysis</p>
+            <div class="header-meta">
+                <span>📍 Scenario C Active</span>
+                <span>🕒 Analysis: June 2026</span>
+                <span>🏭 Source: TSMC / World Bank / FRED</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="controls">
+            <h2>⚙️ Shock Severity Simulator</h2>
+            <p class="section-desc">Adjust the severity of the Taiwan semiconductor disruption to simulate different impact scenarios.</p>
+            <div class="slider-wrapper">
+                <input type="range" id="severitySlider" min="10" max="80" step="10" value="40">
+                <div class="slider-labels">
+                    <span>10% — Minor</span>
+                    <span>40% — Moderate</span>
+                    <span>80% — Catastrophic</span>
+                </div>
+            </div>
+            <div class="severity-display">
+                Severity: <span id="severityValue">40%</span>
+            </div>
+        </section>
+
+        <section class="overview">
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <h3>Total Estimated Loss</h3>
+                <p id="totalLoss">Loading...</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌏</div>
+                <h3>Active Scenario</h3>
+                <p id="scenario">Loading...</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <h3>Impact Timeline</h3>
+                <p id="timeline">Loading...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>🏭 Industry Impact Analysis</h2>
+            <p class="section-desc">Revenue loss and dependency scores across critical industries affected by the semiconductor shock.</p>
+            <table id="industryTable">
+                <thead>
+                    <tr>
+                        <th>Industry</th>
+                        <th>Chip Dependency %</th>
+                        <th>Impact Level</th>
+                        <th>Revenue Loss ($B)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="chart-container">
+                <canvas id="industryChart"></canvas>
+            </div>
+        </section>
+
+        <section>
+            <h2>🗺️ Global Risk Map</h2>
+            <p class="section-desc">Countries sized and colored by risk exposure. Click any marker for details.</p>
+            <div id="map"></div>
+        </section>
+
+        <section>
+            <h2>🔗 Supply Chain Ripple Effect Analysis</h2>
+            <p class="section-desc">How a single disruption in Taiwan cascades across global industries in real time.</p>
+            <div id="rippleContainer" class="ripple-grid"></div>
+        </section>
+
+        <section>
+            <h2>🛒 Consumer Impact Analyzer</h2>
+            <p class="section-desc">Predicted price increases and shortage timelines for everyday products.</p>
+            <div id="consumerContainer" class="consumer-grid"></div>
+        </section>
+
+        <section>
+            <h2>📋 Executive Summary</h2>
+            <p class="section-desc">One-page CEO brief — what happened, who is affected, estimated impact, and recommendations.</p>
+            <button id="downloadReportBtn" class="report-btn">
+                📄 Download Executive Report (PDF)
+            </button>
+            <div id="executiveSummary" class="summary-card">
+                Loading executive summary...
+            </div>
+        </section>
+
+        <section>
+            <h2>📈 Investment Intelligence Dashboard</h2>
+            <p class="section-desc">Buy, hold, and risk signals by sector based on semiconductor shock exposure.</p>
+            <div id="investmentContainer" class="investment-grid"></div>
+        </section>
+
+        <section>
+            <h2>🌐 Country Risk Analysis</h2>
+            <p class="section-desc">Risk scores by country based on trade dependency and supply chain exposure.</p>
+            <div id="countryRiskContainer" class="risk-grid"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Global Supply Chain Shock Intelligence Platform &copy; 2026 — Built for IndidriftX Challenge</p>
+        <p>Data Sources: World Bank, FRED, UN Comtrade, TSMC Public Filings</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

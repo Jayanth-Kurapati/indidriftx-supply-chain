@@ -193,7 +193,7 @@ function renderRippleEffects() {
 async function loadConsumerData(severity = 40) {
 
     const response = await fetch(
-        `http://127.0.0.1:5000/api/consumer?severity=${severity}`
+        `https://indidriftx-backend.onrender.com/api/consumer?severity=${severity}`
     );
 
     const data = await response.json();
@@ -235,7 +235,7 @@ async function loadConsumerData(severity = 40) {
 async function loadExecutiveSummary(severity = 40) {
 
     const response = await fetch(
-        `http://127.0.0.1:5000/api/summary?severity=${severity}`
+        `https://indidriftx-backend.onrender.com/api/summary?severity=${severity}`
     );
 
     const data = await response.json();
@@ -315,7 +315,7 @@ async function loadExecutiveSummary(severity = 40) {
 async function loadInvestmentData(severity = 40) {
 
     const response = await fetch(
-        `http://127.0.0.1:5000/api/investment?severity=${severity}`
+        `https://indidriftx-backend.onrender.com/api/investment?severity=${severity}`
     );
 
     const data = await response.json();
@@ -394,7 +394,7 @@ async function loadInvestmentData(severity = 40) {
 async function loadShockData(severity = 40) {
 
     const response = await fetch(
-        `http://127.0.0.1:5000/api/shock?severity=${severity}`
+        `https://indidriftx-backend.onrender.com/api/shock?severity=${severity}`
     );
 
     const data = await response.json();
@@ -616,7 +616,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const severity = slider.value;
 
         window.open(
-            `http://127.0.0.1:5000/api/report?severity=${severity}`,
+            `https://indidriftx-backend.onrender.com/api/report?severity=${severity}`,
             "_blank"
         );
     });

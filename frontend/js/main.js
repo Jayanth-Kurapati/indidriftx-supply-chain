@@ -4,8 +4,7 @@ let industryChart = null;
 
 const slider = document.getElementById("severitySlider");
 const severityValue = document.getElementById("severityValue");
-const reportButton =
-    document.getElementById("downloadReportBtn");
+const reportButton = document.getElementById("downloadReportBtn");
 
 slider.addEventListener("input", () => {
     const val = slider.value;
@@ -18,7 +17,6 @@ slider.addEventListener("input", () => {
 });
 
 function initializeMap() {
-
     map = L.map("map", {
         scrollWheelZoom: false,
         minZoom: 2,
@@ -27,12 +25,9 @@ function initializeMap() {
         maxBoundsViscosity: 1.0
     }).setView([20, 0], 2);
 
-L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution: "&copy; OpenStreetMap"
-        }
-    ).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
 
     const legend = L.control({ position: "bottomright" });
 
@@ -52,7 +47,6 @@ L.tileLayer(
 }
 
 function getCountryCoordinates(country) {
-
     const locations = {
         "Taiwan": [23.7, 121.0],
         "South Korea": [36.5, 127.8],
@@ -65,12 +59,10 @@ function getCountryCoordinates(country) {
         "Netherlands": [52.1, 5.3],
         "Malaysia": [4.2, 102.0]
     };
-
     return locations[country];
 }
 
 function updateMap(countries) {
-
     markers.forEach(marker => {
         map.removeLayer(marker);
     });
@@ -78,9 +70,7 @@ function updateMap(countries) {
     markers = [];
 
     countries.forEach(country => {
-
         const coords = getCountryCoordinates(country.country);
-
         if (!coords) return;
 
         let color = "#22c55e";
@@ -191,400 +181,235 @@ function renderRippleEffects() {
 }
 
 async function loadConsumerData(severity = 40) {
-
     const response = await fetch(
         `https://indidriftx-backend.onrender.com/api/consumer?severity=${severity}`
     );
-
     const data = await response.json();
-
-    const consumerContainer =
-        document.getElementById("consumerContainer");
-
+    const consumerContainer = document.getElementById("consumerContainer");
     consumerContainer.innerHTML = "";
 
     data.products.forEach(product => {
-
         consumerContainer.innerHTML += `
             <div class="consumer-card">
-
                 <h3>${product.product}</h3>
-
-                <div class="price-increase">
-                    +${product.price_increase_pct}%
-                </div>
-
-                <p class="new-price">
-                    New Price: $${product.new_avg_price_usd}
-                </p>
-
-                <p>
-                    Timeline:
-                    ${product.timeline_months} months
-                </p>
-
-                <p class="consumer-risk">
-                    Risk: ${product.shortage_risk}
-                </p>
-
+                <div class="price-increase">+${product.price_increase_pct}%</div>
+                <p class="new-price">New Price: $${product.new_avg_price_usd}</p>
+                <p>Timeline: ${product.timeline_months} months</p>
+                <p class="consumer-risk">Risk: ${product.shortage_risk}</p>
             </div>
         `;
     });
 }
 
 async function loadExecutiveSummary(severity = 40) {
-
     const response = await fetch(
         `https://indidriftx-backend.onrender.com/api/summary?severity=${severity}`
     );
-
     const data = await response.json();
-
-    const container =
-        document.getElementById("executiveSummary");
-
+    const container = document.getElementById("executiveSummary");
     if (!container) return;
 
     container.innerHTML = `
-
-        <div class="summary-title">
-            ${data.title}
-        </div>
-
-        <div class="summary-subtitle">
-            ${data.subtitle}
-        </div>
-
-        <div class="severity-badge">
-            Severity Level: ${severity}%
-        </div>
-
+        <div class="summary-title">${data.title}</div>
+        <div class="summary-subtitle">${data.subtitle}</div>
+        <div class="severity-badge">Severity Level: ${severity}%</div>
         <div class="summary-grid">
-
             <div class="summary-metric">
                 <h4>Industry Loss</h4>
                 <p>$${data.estimated_impact.total_industry_loss_bn}B</p>
             </div>
-
             <div class="summary-metric">
                 <h4>Consumer Impact</h4>
                 <p>$${data.estimated_impact.consumer_extra_spend_bn}</p>
             </div>
-
             <div class="summary-metric">
                 <h4>Inflation Impact</h4>
                 <p>${data.estimated_impact.inflation_contribution_pct}%</p>
             </div>
-
             <div class="summary-metric">
                 <h4>Recovery</h4>
                 <p>${data.estimated_impact.recovery_months} Mo</p>
             </div>
-
         </div>
-
         <div class="executive-highlight-grid">
-
             <div class="executive-highlight">
                 <h4>Top Risk Sector</h4>
                 <p>AI & Data Centers</p>
             </div>
-
             <div class="executive-highlight">
                 <h4>Top Investment Opportunity</h4>
                 <p>US Domestic Chip Makers</p>
             </div>
-
         </div>
-
         <div class="executive-narrative">
             <h4>Situation Overview</h4>
-            <p>
-                ${data.what_happened.content}
-            </p>
+            <p>${data.what_happened.content}</p>
         </div>
-
         <div class="summary-bottom">
-            <strong>Executive Bottom Line</strong>
-            <br><br>
+            <strong>Executive Bottom Line</strong><br><br>
             ${data.bottom_line}
         </div>
     `;
 }
 
 async function loadInvestmentData(severity = 40) {
-
     const response = await fetch(
         `https://indidriftx-backend.onrender.com/api/investment?severity=${severity}`
     );
-
     const data = await response.json();
-
-    const investmentContainer =
-        document.getElementById("investmentContainer");
-
+    const investmentContainer = document.getElementById("investmentContainer");
     investmentContainer.innerHTML = "";
 
     data.sectors.forEach(sector => {
-
         let signalClass = "signal-hold";
-
-        if (sector.signal.includes("BUY")) {
-            signalClass = "signal-buy";
-        }
-
-        if (sector.signal.includes("RISK")) {
-            signalClass = "signal-risk";
-        }
+        if (sector.signal.includes("BUY")) signalClass = "signal-buy";
+        if (sector.signal.includes("RISK")) signalClass = "signal-risk";
 
         investmentContainer.innerHTML += `
             <div class="investment-card">
-
                 <h3>${sector.sector}</h3>
-
-                <div class="investment-signal ${signalClass}">
-                    ${sector.signal}
-                </div>
-
+                <div class="investment-signal ${signalClass}">${sector.signal}</div>
                 <div class="score-row">
                     <span>Risk Score</span>
                     <strong>${sector.risk_score}</strong>
                 </div>
-
                 <div class="score-row">
                     <span>Opportunity Score</span>
                     <strong>${sector.opportunity_score}</strong>
                 </div>
-
                 <div class="expected-move">
-
-    <div class="expected-move-value ${
-        sector.expected_change_pct >= 0
-            ? "move-positive"
-            : "move-negative"
-    }">
-
-        ${sector.expected_change_pct}%
-
-    </div>
-
-    <div class="expected-move-label">
-        Expected Move
-    </div>
-
-</div>
-
-                <p>
-                    ${sector.reasoning}
-                </p>
-
-                <div class="stock-list">
-                    ${sector.key_stocks.join(" • ")}
+                    <div class="expected-move-value ${sector.expected_change_pct >= 0 ? 'move-positive' : 'move-negative'}">
+                        ${sector.expected_change_pct}%
+                    </div>
+                    <div class="expected-move-label">Expected Move</div>
                 </div>
-
-                <div class="action-text">
-                    ${sector.action}
-                </div>
-
+                <p>${sector.reasoning}</p>
+                <div class="stock-list">${sector.key_stocks.join(" • ")}</div>
+                <div class="action-text">${sector.action}</div>
             </div>
         `;
     });
 }
 
 async function loadShockData(severity = 40) {
-
     const response = await fetch(
         `https://indidriftx-backend.onrender.com/api/shock?severity=${severity}`
     );
-
     const data = await response.json();
 
-    document.getElementById("totalLoss").textContent =
-        "$" + data.total_estimated_loss_bn + " Billion";
+    document.getElementById("totalLoss").textContent = "$" + data.total_estimated_loss_bn + " Billion";
+    document.getElementById("scenario").textContent = data.scenario;
+    document.getElementById("timeline").textContent = data.timeline;
 
-    document.getElementById("scenario").textContent =
-        data.scenario;
-
-    document.getElementById("timeline").textContent =
-        data.timeline;
-
-    const tbody =
-        document.querySelector("#industryTable tbody");
-
+    const tbody = document.querySelector("#industryTable tbody");
     tbody.innerHTML = "";
 
     data.industries.forEach(industry => {
-
-        const row = `
+        tbody.innerHTML += `
             <tr>
                 <td>${industry.name}</td>
                 <td>${industry.dependency}</td>
-                <td class="${industry.impact_level.toLowerCase()}">
-                    ${industry.impact_level}
-                </td>
+                <td class="${industry.impact_level.toLowerCase()}">${industry.impact_level}</td>
                 <td>${industry.revenue_loss_bn}</td>
             </tr>
         `;
-
-        tbody.innerHTML += row;
     });
 
-    const labels =
-    data.industries.map(i => i.name);
+    const labels = data.industries.map(i => i.name);
+    const losses = data.industries.map(i => i.revenue_loss_bn);
 
-const losses =
-    data.industries.map(i => i.revenue_loss_bn);
-
-if (industryChart) {
-    industryChart.destroy();
-}
-
-
-
-industryChart = new Chart(ctx2, {
-    type: "bar",
-    data: {
-        labels: labels,
-        datasets: [{
-            label: "Revenue Loss ($B)",
-            data: losses,
-            backgroundColor: [
-                "rgba(239, 68, 68, 0.8)",
-                "rgba(249, 115, 22, 0.8)",
-                "rgba(59, 130, 246, 0.8)",
-                "rgba(234, 179, 8, 0.8)",
-                "rgba(139, 92, 246, 0.8)",
-                "rgba(34, 197, 94, 0.8)"
-            ],
-            borderColor: [
-                "#ef4444",
-                "#f97316",
-                "#3b82f6",
-                "#eab308",
-                "#8b5cf6",
-                "#22c55e"
-            ],
-            borderWidth: 2,
-            borderRadius: 6,
-            borderSkipped: false
-        }]
-    },
-    options: {
-        responsive: true,
-        animation: {
-            duration: 600,
-            easing: "easeInOutQuart"
-        },
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                backgroundColor: "#1a1a2e",
-                titleColor: "#ffffff",
-                bodyColor: "#aaaacc",
-                borderColor: "#3b82f6",
-                borderWidth: 1,
-                padding: 12,
-                callbacks: {
-                    label: function(context) {
-                        return ` $${context.parsed.y}B estimated loss`;
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                ticks: {
-                    color: "#aaaacc",
-                    font: { size: 11 },
-                    maxRotation: 25
-                },
-                grid: { color: "rgba(255,255,255,0.05)" }
-            },
-            y: {
-                ticks: {
-                    color: "#aaaacc",
-                    font: { size: 11 },
-                    callback: function(value) {
-                        return "$" + value + "B";
-                    }
-                },
-                grid: { color: "rgba(255,255,255,0.05)" }
-            }
-        }
+    if (industryChart) {
+        industryChart.destroy();
     }
-});
 
+    const chartCanvas = document.getElementById("industryChart");
 
-
-industryChart = new Chart(ctx2, {
-    type: "bar",
-
-    data: {
-        labels: labels,
-
-        datasets: [{
-            label: "Revenue Loss ($B)",
-            data: losses,
-            backgroundColor: [
-                "#ef4444",
-                "#f97316",
-                "#3b82f6",
-                "#eab308",
-                "#8b5cf6",
-                "#22c55e"
-            ]
-        }]
-    },
-
-    options: {
-        responsive: true,
-
-        plugins: {
-            legend: {
-                labels: {
-                    color: "#ffffff"
-                }
-            }
+    industryChart = new Chart(chartCanvas, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Revenue Loss ($B)",
+                data: losses,
+                backgroundColor: [
+                    "rgba(239, 68, 68, 0.8)",
+                    "rgba(249, 115, 22, 0.8)",
+                    "rgba(59, 130, 246, 0.8)",
+                    "rgba(234, 179, 8, 0.8)",
+                    "rgba(139, 92, 246, 0.8)",
+                    "rgba(34, 197, 94, 0.8)"
+                ],
+                borderColor: [
+                    "#ef4444",
+                    "#f97316",
+                    "#3b82f6",
+                    "#eab308",
+                    "#8b5cf6",
+                    "#22c55e"
+                ],
+                borderWidth: 2,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
         },
-
-        scales: {
-            x: {
-                ticks: {
-                    color: "#ffffff"
+        options: {
+            responsive: true,
+            animation: {
+                duration: 600,
+                easing: "easeInOutQuart"
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "#1a1a2e",
+                    titleColor: "#ffffff",
+                    bodyColor: "#aaaacc",
+                    borderColor: "#3b82f6",
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            return ` $${context.parsed.y}B estimated loss`;
+                        }
+                    }
                 }
             },
-
-            y: {
-                ticks: {
-                    color: "#ffffff"
+            scales: {
+                x: {
+                    ticks: {
+                        color: "#aaaacc",
+                        font: { size: 11 },
+                        maxRotation: 25
+                    },
+                    grid: { color: "rgba(255,255,255,0.05)" }
+                },
+                y: {
+                    ticks: {
+                        color: "#aaaacc",
+                        font: { size: 11 },
+                        callback: function(value) {
+                            return "$" + value + "B";
+                        }
+                    },
+                    grid: { color: "rgba(255,255,255,0.05)" }
                 }
             }
         }
-    }
-});
+    });
 
-    const riskContainer =
-        document.getElementById("countryRiskContainer");
-
+    const riskContainer = document.getElementById("countryRiskContainer");
     riskContainer.innerHTML = "";
 
     data.affected_countries.forEach(country => {
-
         let riskClass = "risk-low";
-
-        if (country.risk >= 80) {
-            riskClass = "risk-high";
-        } else if (country.risk >= 60) {
-            riskClass = "risk-medium";
-        }
+        if (country.risk >= 80) riskClass = "risk-high";
+        else if (country.risk >= 60) riskClass = "risk-medium";
 
         riskContainer.innerHTML += `
             <div class="risk-card">
                 <h3>${country.country}</h3>
                 <p>${country.role}</p>
-                <p class="risk-score ${riskClass}">
-                    ${country.risk}
-                </p>
+                <p class="risk-score ${riskClass}">${country.risk}</p>
             </div>
         `;
     });
@@ -597,9 +422,7 @@ industryChart = new Chart(ctx2, {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-
     initializeMap();
-
     renderRippleEffects();
 
     const initialVal = slider.value;
@@ -611,14 +434,10 @@ window.addEventListener("DOMContentLoaded", () => {
     loadShockData();
 
     reportButton.addEventListener("click", () => {
-
         const severity = slider.value;
-
         window.open(
             `https://indidriftx-backend.onrender.com/api/report?severity=${severity}`,
             "_blank"
         );
     });
-
 });
-

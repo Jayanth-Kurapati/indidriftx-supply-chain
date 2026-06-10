@@ -514,8 +514,7 @@ industryChart = new Chart(ctx, {
     }
 });
 
-const ctx =
-    document.getElementById("industryChart");
+const ctx2 = document.getElementById("industryChart");
 
 industryChart = new Chart(ctx2, {
     type: "bar",

@@ -439,9 +439,9 @@ if (industryChart) {
     industryChart.destroy();
 }
 
-const ctx2 = document.getElementById("industryChart");
 
-industryChart = new Chart(ctx, {
+
+industryChart = new Chart(ctx2, {
     type: "bar",
     data: {
         labels: labels,
@@ -514,7 +514,7 @@ industryChart = new Chart(ctx, {
     }
 });
 
-const ctx2 = document.getElementById("industryChart");
+
 
 industryChart = new Chart(ctx2, {
     type: "bar",

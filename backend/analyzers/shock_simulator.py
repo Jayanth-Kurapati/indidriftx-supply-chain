@@ -7,14 +7,14 @@ def get_shock_analysis(severity=40):
     severity_factor = severity / 40
     disruption_pct = severity / 100
 
-    # Verified: Global semiconductor market $630B (your research)
+    # Verified: Global semiconductor market $630.5B (SIA / WSTS 2024 Factbook)
     # Verified: TSMC holds 62-65% of foundry market (Gartner 2024)
-    # Verified: TSMC holds 80-90% of advanced chip market (sub-7nm)
+    # TSMC holds 80-90% of advanced chip market (sub-7nm) - cited as industry context, not yet pinned to one named report
     # Verified: McKinsey 3x GDP multiplier for semiconductor impact
     tsmc_revenue = 90  # USD Billion - TSMC Annual Revenue 2024
     tsmc_market_share = 0.63  # Gartner 2024
-    global_semi_market = 630  # USD Billion
-    tsmc_controlled = global_semi_market * tsmc_market_share  # ~$400B
+    global_semi_market = 630  # USD Billion - SIA/WSTS 2024 (rounded from $630.5B)
+    tsmc_controlled = global_semi_market * tsmc_market_share  # ~$397B
     direct_loss = tsmc_controlled * disruption_pct
     multiplier = 3  # McKinsey GDP multiplier
     total_loss = direct_loss * multiplier
@@ -145,12 +145,19 @@ def get_shock_analysis(severity=40):
         "scenario": "Taiwan Semiconductor Supply Chain Disruption",
         "disruption_percentage": severity,
         "total_estimated_loss_bn": total_loss_rounded,
-        "calculation_basis": f"TSMC controls ${round(tsmc_controlled)}B of global chip supply. {severity}% disruption = ${round(direct_loss)}B direct loss x McKinsey 3x multiplier = ${total_loss_rounded}B downstream impact.",
+        "tsmc_controlled_bn": round(tsmc_controlled, 1),
+        "calculation_basis": f"TSMC controls ${round(tsmc_controlled)}B of global chip supply. {severity}% disruption = ${round(direct_loss)}B direct loss x McKinsey 3x multiplier ~= ${total_loss_rounded}B downstream impact.",
+        "calculation_inputs": {
+            "global_semiconductor_market_bn": global_semi_market,
+            "tsmc_foundry_share_pct": round(tsmc_market_share * 100, 1),
+            "mckinsey_gdp_multiplier": multiplier
+        },
         "industries": industries,
         "affected_countries": affected_countries,
         "shock_type": "Semiconductor",
         "timeline": timeline,
         "data_sources": [
+            "SIA / WSTS 2024 Factbook - Global Semiconductor Market Size",
             "Gartner 2024 - TSMC Foundry Market Share",
             "McKinsey Semiconductors 2024 - GDP Multiplier",
             "Deloitte 2026 Global Semiconductor Outlook",

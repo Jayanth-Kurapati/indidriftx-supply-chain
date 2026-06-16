@@ -1,7 +1,12 @@
+from analyzers.shock_simulator import get_shock_analysis
+
+
 def get_executive_summary(severity=40):
     severity_factor = severity / 40
-    direct_loss = round(400 * (severity / 100), 1)
-    total_loss = round(direct_loss * 3, 1)
+    shock_data = get_shock_analysis(severity)
+    tsmc_controlled = shock_data["tsmc_controlled_bn"]
+    total_loss = shock_data["total_estimated_loss_bn"]
+    direct_loss = round(tsmc_controlled * (severity / 100), 1)
 
     return {
         "title": "Executive Intelligence Brief",
@@ -49,12 +54,12 @@ def get_executive_summary(severity=40):
             "heading": "Estimated Financial Impact",
             "global_gdp_impact_pct": round(-1.2 * severity_factor, 1),
             "total_industry_loss_bn": total_loss,
-            "calculation_note": f"TSMC controls ~$400B of global chip supply. {severity}% disruption = ${direct_loss}B direct loss x McKinsey 3x GDP multiplier = ${total_loss}B downstream impact.",
+            "calculation_note": f"TSMC controls ~${tsmc_controlled}B of global chip supply ({shock_data['calculation_inputs']['global_semiconductor_market_bn']}B SIA/WSTS market size x {shock_data['calculation_inputs']['tsmc_foundry_share_pct']}% Gartner foundry share). {severity}% disruption = ${direct_loss}B direct loss x McKinsey 3x GDP multiplier ~= ${total_loss}B downstream impact.",
             "consumer_extra_spend_bn": round(1200 * severity_factor),
             "inflation_contribution_pct": round(2.2 * severity_factor, 1),
             "market_correction_pct": round(-15 * severity_factor),
             "recovery_months": round(18 * severity_factor),
-            "key_stat": f"Every 10% reduction in TSMC output = approximately ${round(400 * 0.10 * 3)}B in downstream industry losses globally (McKinsey multiplier applied to Gartner market share data)."
+            "key_stat": f"Every 10% reduction in TSMC output = approximately ${round(tsmc_controlled * 0.10 * 3, 1)}B in downstream industry losses globally (McKinsey multiplier applied to Gartner market share data)."
         },
 
         "recommendations": {
@@ -82,5 +87,5 @@ def get_executive_summary(severity=40):
             ]
         },
 
-        "bottom_line": f"A {severity}% Taiwan semiconductor disruption is not a technology problem — it is a national security and economic emergency. The $630B global semiconductor market (your research) with TSMC controlling 62-65% (Gartner) means there is no quick fix. Organizations that act within the first 30 days will minimize losses. Those that wait will face 18-24 months of constrained operations. The 2021 chip shortage cost the automotive industry alone $210B in lost revenue — and that was a minor disruption compared to this scenario."
+        "bottom_line": f"A {severity}% Taiwan semiconductor disruption is not a technology problem — it is a national security and economic emergency. The $630.5B global semiconductor market (SIA/WSTS 2024) with TSMC controlling 62-65% (Gartner) means there is no quick fix. Organizations that act within the first 30 days will minimize losses. Those that wait will face 18-24 months of constrained operations. The 2021 chip shortage cost the automotive industry alone $210B in lost revenue — and that was a minor disruption compared to this scenario."
     }
